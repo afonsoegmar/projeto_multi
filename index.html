@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto Multifunções - Egmar</title>
+
+<style>
+/* ======================== */
+/*        TEMA GERAL        */
+/* ======================== */
+:root {
+  --bg: #06060f;
+  --text: #e6e6ff;
+  --glass: rgba(255,255,255,0.08);
+  --accent: #00ffff;
+  --accent2: #ff00ff;
+  --btn: rgba(255,255,255,0.12);
+  --btn-dark: rgba(0,0,0,0.35);
+}
+
+body.dark {
+  --bg: #e8e8e8;
+  --text: #000;
+  --glass: rgba(0,0,0,0.15);
+  --btn: rgba(0,0,0,0.15);
+  --btn-dark: rgba(0,0,0,0.45);
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ======================== */
+/*          NAVBAR          */
+/* ======================== */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.35);
+  padding: 15px;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+nav a:hover {
+  color: var(--accent2);
+}
+
+/* ======================== */
+/*         FOOTER           */
+/* ======================== */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 12px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  background: rgba(0,0,0,0.35);
+  color: var(--accent);
+}
+
+/* ======================== */
+/*        CONTAINERS        */
+/* ======================== */
+.page {
+  display: none;
+  padding: 100px 20px 80px;
+}
+.page.active { display: block; }
+/* Home só vira flex quando está ativa */
+#home.page.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 160px);
+  text-align: center;
+}
+
+.active {
+  display: block;
+}
+
+/* CARD PADRÃO */
+.card {
+  background: var(--glass);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px auto;
+  max-width: 600px;
+  backdrop-filter: blur(10px);
+}
+/* ======================================= */
+/*               TABUADA                   */
+/* ======================================= */
+
+#tabuada .card {
+  max-width: 650px;
+  padding: 30px;
+}
+
+#numeroTabuada {
+  width: 70%;              /* <<< reduzido para caber perfeitamente */
+  padding: 12px;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  border: 2px solid var(--accent);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  outline: none;
+  transition: 0.3s;
+  backdrop-filter: blur(5px);
+  margin-bottom: 15px;
+}
+
+#numeroTabuada:focus {
+  border-color: var(--accent2);
+  box-shadow: 0 0 12px var(--accent2);
+}
+
+/* Botão da tabuada */
+#gerarTabuada {
+  padding: 12px 25px;
+  font-size: 1.3rem;
+  border-radius: 12px;
+  background: linear-gradient(45deg, var(--accent), var(--accent2));
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  transition: 0.3s;
+}
+
+#gerarTabuada:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--accent);
+}
+
+/* Lista */
+#resultadoTabuada li {
+  padding: 8px 0;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+
+
+/* CARD MAIOR PARA A HOME */
+.card-home {
+  max-width: 900px;
+  padding: 40px;
+  margin-top: 40px;
+  text-align: center;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 20px rgba(0,255,255,0.4);
+}
+
+/* ======================== */
+/*  CALCULADORA WINDOWS     */
+/* ======================== */
+
+.calc-container {
+  width: 320px;
+  margin: auto;
+  background: var(--glass);
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.calc-display {
+  width: 100%;
+  height: 70px;
+  background: #000;
+  color: #0f0;
+  font-size: 2.2rem;
+  text-align: right;
+  padding: 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.calc-btn {
+  background: var(--btn);
+  border: none;
+  padding: 18px;
+  font-size: 1.3rem;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.calc-btn:active { transform: scale(0.95); }
+.calc-op { background: var(--accent2); color: #fff; }
+.calc-eq {
+  background: var(--accent);
+  color: #000;
+  grid-column: span 2;
+}
+
+/* TABUADA / JOGOS / OUTROS */
+ul { list-style: none; padding: 0; }
+
+.ttt.cell {
+  background: var(--glass);
+  border: 2px solid rgba(255,255,255,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:2.5rem;
+  font-weight:700;
+  color:var(--accent);
+  cursor:pointer;
+  border-radius:10px;
+  transition:.2s;
+}
+
+.ttt.cell:hover { background: rgba(0,240,255,0.05); }
+/* ======================================= */
+/*      GAME - Adivinhe o Número           */
+/* ======================================= */
+
+/* ======================================= */
+/*        GAME - ADIVINHE O NÚMERO         */
+/* ======================================= */
+
+#game .card {
+  max-width: 650px;
+  padding: 30px;
+  text-align: center;
+}
+
+/* Input do game */
+#inputGame {
+  width: 60%;
+  padding: 12px;
+  font-size: 1.3rem;
+  border-radius: 12px;
+  border: 2px solid var(--accent);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  outline: none;
+  transition: 0.3s;
+  margin-bottom: 18px;
+  backdrop-filter: blur(5px);
+}
+
+#inputGame:focus {
+  border-color: var(--accent2);
+  box-shadow: 0 0 12px var(--accent2);
+}
+
+/* Botão do game */
+#btnGame {
+  padding: 12px 30px;
+  font-size: 1.3rem;
+  border-radius: 12px;
+  background: linear-gradient(45deg, var(--accent), var(--accent2));
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  transition: 0.3s;
+}
+
+#btnGame:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--accent);
+}
+
+/* Mensagem */
+#msgGame {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: var(--accent);
+}
+
+</style>
+</head>
+<body>
+
+<!-- ======================== -->
+<!--         NAVBAR           -->
+<!-- ======================== -->
+<nav>
+  <a data-page="home">Home</a>
+  <a data-page="calc">Calculadora</a>
+  <a data-page="tabuada">Tabuada</a>
+  <a data-page="game">Game</a>
+  <a data-page="snake">Jogo da Velha</a>
+  <a id="toggleDark">🌙</a>
+</nav>
+
+<!-- ======================== -->
+<!--         HOME             -->
+<!-- ======================== -->
+<section id="home" class="page active">
+  <div class="card-home">
+    <h1 style="font-size: 2.5rem;">🚀 Bem-vindo ao Projeto Multifunções</h1>
+    <p style="font-size: 1.2rem;">
+      Um ambiente futurista desenvolvido por <strong>Egmar</strong>, reunindo diversas ferramentas interativas:
+    </p>
+
+    <div style="margin-top:20px; font-size:1.3rem; line-height:1.8;">
+      🔹 Calculadora estilo Windows <br>
+      🔹 Tabuada dinâmica <br>
+      🔹 Jogo: Adivinhe o Número <br>
+      🔹 Jogo da Velha moderno <br>
+    </div>
+
+    <p style="margin-top:30px; font-size:1.1rem;">
+      Navegue pelo menu acima e explore tudo!
+    </p>
+  </div>
+</section>
+
+<!-- ======================== -->
+<!--      CALCULADORA         -->
+<!-- ======================== -->
+<section id="calc" class="page">
+  <div class="card">
+    <h2>Calculadora Windows</h2>
+
+    <div class="calc-container">
+      <div id="calcDisplay" class="calc-display">0</div>
+
+      <div class="calc-grid">
+        <button class="calc-btn" data-action="clear">C</button>
+        <button class="calc-btn" data-action="invert">±</button>
+        <button class="calc-btn" data-action="percent">%</button>
+        <button class="calc-btn calc-op" data-action="op" data-value="/">÷</button>
+
+        <button class="calc-btn" data-num="7">7</button>
+        <button class="calc-btn" data-num="8">8</button>
+        <button class="calc-btn" data-num="9">9</button>
+        <button class="calc-btn calc-op" data-action="op" data-value="*">×</button>
+
+        <button class="calc-btn" data-num="4">4</button>
+        <button class="calc-btn" data-num="5">5</button>
+        <button class="calc-btn" data-num="6">6</button>
+        <button class="calc-btn calc-op" data-action="op" data-value="-">−</button>
+
+        <button class="calc-btn" data-num="1">1</button>
+        <button class="calc-btn" data-num="2">2</button>
+        <button class="calc-btn" data-num="3">3</button>
+        <button class="calc-btn calc-op" data-action="op" data-value="+">+</button>
+
+        <button class="calc-btn" data-num="0" style="grid-column: span 2">0</button>
+        <button class="calc-btn" data-action="dot">,</button>
+
+        <button class="calc-btn calc-eq" data-action="equal">=</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== -->
+<!--         TABUADA          -->
+<!-- ======================== -->
+<section id="tabuada" class="page">
+  <div class="card">
+    <h2>Gerar Tabuada</h2>
+    <input type="number" id="numeroTabuada" placeholder="Digite um número">
+    <button id="gerarTabuada">Gerar</button>
+    <ul id="resultadoTabuada"></ul>
+  </div>
+</section>
+
+<!-- ======================== -->
+<!--        GAME               -->
+<!-- ======================== -->
+<section id="game" class="page">
+  <div class="card">
+    <h2>Jogo: Adivinhe o Número</h2>
+    <p id="msgGame">Pensei em um número de 1 a 20.</p>
+
+    <input id="inputGame" type="number" placeholder="Seu palpite">
+    <button id="btnGame">Enviar</button>
+  </div>
+</section>
+
+<!-- ======================== -->
+<!--     JOGO DA VELHA        -->
+<!-- ======================== -->
+<section id="snake" class="page">
+  <div class="card">
+    <h2>Jogo da Velha</h2>
+
+    <div id="ticTacToeBoard"
+      style="display:grid; grid-template-columns:repeat(3, 100px); grid-template-rows:repeat(3, 100px);
+             gap:10px; margin:20px auto; justify-content:center;">
+      <div class="ttt cell" data-cell></div>
+      <div class="ttt cell" data-cell></div>
+      <div class="ttt cell" data-cell></div>
+      <div class="ttt cell" data-cell></div>
+      <div class="ttt cell" data-cell></div>
+      <div class="ttt cell" data-cell></div>
+      <div class="ttt cell" data-cell></div>
+      <div class="ttt cell" data-cell></div>
+      <div class="ttt cell" data-cell></div>
+    </div>
+
+    <p id="tttStatus" style="text-align:center;">Sua vez: <strong>X</strong></p>
+    <button id="restartTTT">Reiniciar</button>
+  </div>
+</section>
+
+<!-- ======================== -->
+<!--        FOOTER            -->
+<!-- ======================== -->
+<footer>
+  Desenvolvido por Egmar © 2025
+</footer>
+
+<!-- ======================== -->
+<!--       JAVASCRIPT         -->
+<!-- ======================== -->
+<script>
+/* -------- SISTEMA DE PAGINAS -------- */
+document.querySelectorAll("nav a[data-page]").forEach(link => {
+  link.onclick = () => {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(link.dataset.page).classList.add("active");
+  };
+});
+
+/* -------- DARK MODE -------- */
+document.getElementById("toggleDark").onclick = () => {
+  document.body.classList.toggle("dark");
+};
+
+/* -------- CALCULADORA -------- */
+let display = document.getElementById("calcDisplay");
+let current = "0", stored = null, operation = null;
+
+function updateDisplay(){ display.innerText = current; }
+
+document.querySelectorAll(".calc-btn").forEach(btn => {
+  btn.onclick = () => {
+    let num = btn.dataset.num;
+    let act = btn.dataset.action;
+
+    if (num !== undefined) {
+      current = (current === "0") ? num : current + num;
+      updateDisplay();
+    }
+
+    if (act === "dot" && !current.includes(".")) {
+      current += ".";
+      updateDisplay();
+    }
+
+    if (act === "clear") {
+      current = "0"; stored = null; operation = null; updateDisplay();
+    }
+
+    if (act === "invert") {
+      current = String(parseFloat(current) * -1);
+      updateDisplay();
+    }
+
+    if (act === "percent") {
+      current = String(parseFloat(current) / 100);
+      updateDisplay();
+    }
+
+    if (act === "op") {
+      stored = current;
+      current = "0";
+      operation = btn.dataset.value;
+    }
+
+    if (act === "equal") {
+      if (stored && operation) {
+        let a = parseFloat(stored), b = parseFloat(current);
+        switch (operation) {
+          case "+": current = a + b; break;
+          case "-": current = a - b; break;
+          case "*": current = a * b; break;
+          case "/": current = b === 0 ? "Erro" : a / b; break;
+        }
+        stored = null; operation = null;
+        current = String(current); updateDisplay();
+      }
+    }
+  };
+});
+
+/* -------- TABUADA -------- */
+document.getElementById("gerarTabuada").onclick = () => {
+  const n = parseInt(document.getElementById("numeroTabuada").value);
+  const ul = document.getElementById("resultadoTabuada");
+  ul.innerHTML = "";
+  if(isNaN(n)) return alert("Digite um número!");
+
+  for(let i=1;i<=10;i++){
+    let li = document.createElement("li");
+    li.innerText = `${n} x ${i} = ${n*i}`;
+    ul.appendChild(li);
+  }
+};
+
+/* -------- ADIVINHE O NÚMERO -------- */
+let secreto = Math.floor(Math.random()*20)+1;
+
+document.getElementById("btnGame").onclick = () => {
+  let palpite = parseInt(document.getElementById("inputGame").value);
+
+  if(palpite === secreto){
+    document.getElementById("msgGame").innerText = "ACERTOU! Reiniciei o número!";
+    secreto = Math.floor(Math.random()*20)+1;
+  }
+  else if(palpite > secreto) document.getElementById("msgGame").innerText = "Muito alto!";
+  else document.getElementById("msgGame").innerText = "Muito baixo!";
+};
+
+/* -------- JOGO DA VELHA -------- */
+const tttCells = document.querySelectorAll("[data-cell]");
+const tttStatus = document.getElementById("tttStatus");
+const restartTTT = document.getElementById("restartTTT");
+
+let currentPlayer = "X";
+let board = ["","","","","","","","",""];
+let gameActive = true;
+
+const winPatterns = [
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
+];
+
+function checkWinner(){
+  for(let [a,b,c] of winPatterns){
+    if(board[a] && board[a] === board[b] && board[a] === board[c]){
+      tttStatus.innerHTML = `Vitória de <strong>${board[a]}</strong>!`;
+      gameActive = false;
+      return;
+    }
+  }
+  if(!board.includes("")){
+    tttStatus.innerHTML = "Empate!";
+    gameActive = false;
+  }
+}
+
+function handleClick(e){
+  let index = [...tttCells].indexOf(e.target);
+  if(board[index] !== "" || !gameActive) return;
+
+  board[index] = currentPlayer;
+  e.target.textContent = currentPlayer;
+
+  checkWinner();
+
+  if(gameActive){
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    tttStatus.innerHTML = `Sua vez: <strong>${currentPlayer}</strong>`;
+  }
+}
+
+function restartGame(){
+  board = ["","","","","","","","",""];
+  gameActive = true;
+  currentPlayer = "X";
+  tttStatus.innerHTML = `Sua vez: <strong>X</strong>`;
+  tttCells.forEach(c => c.textContent = "");
+}
+
+tttCells.forEach(c => c.addEventListener("click", handleClick));
+restartTTT.addEventListener("click", restartGame);
+</script>
+
+</body>
+</html>

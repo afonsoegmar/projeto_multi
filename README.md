@@ -130,7 +130,7 @@ README.md
 
 1️⃣ Baixe ou clone o repositório:
 
-git clone https://github.com/SEU-USUARIO/SEU-REPO.git
+git clone https://github.com/afonsoegmar/projeto_multi.git
 
 
 2️⃣ Abra o arquivo:
